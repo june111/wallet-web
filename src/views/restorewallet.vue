@@ -1,52 +1,39 @@
 <template>
   <div>
-    <h1>创建身份</h1>
-    <main>
-      <el-form :model="postForm" ref="postForm" label-width="100px" class="demo-ruleForm" :rules="rules">
-        <el-form-item label="name" prop="name">
-          <el-input type="text" v-model.number="postForm.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="password" prop="password">
-          <el-input type="password" v-model.number="postForm.password" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="password again" prop="repassword">
-          <el-input type="password" v-model.number="postForm.repassword" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitForm('postForm')">提交</el-button>
-        </el-form-item>
-      </el-form>
-    </main>
+    <h1>恢复身份</h1>
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="助记词" name="mnemonic">
+        <data-form :activeName="activeName" @dataForm="dataForm" />
+      </el-tab-pane>
+      <el-tab-pane label="私钥" name="privateKey">
+        <data-form :activeName="activeName" @dataForm="dataForm" />
+      </el-tab-pane>
+      <el-tab-pane label="keystore" name="keystore">
+        <data-form :activeName="activeName" @dataForm="dataForm" />
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 <script>
+import dataForm from '@/components/form'
+
 export default {
-  name: 'createwallet',
+  name: 'restorewallet',
+  components: {
+    dataForm
+  },
   data () {
     return {
-      postForm: {
-        name: '',
-        password: '',
-        repassword: ''
-      },
-      rules: {
-        name: [{ required: true, trigger: 'blur' }],
-        password: [{ required: true, trigger: 'blur' }],
-        repassword: [{ required: true, trigger: 'blur' }]
-      }
+      activeName: 'mnemonic',
+      postForm: {}
+
     }
   },
   methods: {
-    submitForm (formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert('submit!')
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
+    dataForm (dataForm) {
+      this.postForm = dataForm
     }
   }
 }
+
 </script>
