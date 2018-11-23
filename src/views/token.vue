@@ -142,14 +142,18 @@ export default {
   },
   methods: {
     getWeb3 () {
-      if (typeof web3 !== 'undefined') {
-        // this.web3 = new Web3(web3.currentProvider)
-        // this.isMetamask = true
-      } else {
-        // set the provider you want from Web3.providers
-        this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8081')) // 本地同步的测试网络的节点
-        // this.isMetamask = false
-      }
+      this.web3 = new Web3(Web3.givenProvider || 'https://ropsten.infura.io/v3/323e44018f994f0c97025d409eb79344')
+      // 以太坊网络的节点地址
+
+      // if (typeof web3 !== 'undefined') {
+      //   // this.web3 = new Web3(web3.currentProvider)
+      //   // this.isMetamask = true
+      // } else {
+      //   // set the provider you want from Web3.providers
+      //   // this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8081'))
+      //    // 本地同步的测试网络的节点
+      //   // this.isMetamask = false
+      // }
     },
     getBalance () {
       this.web3.eth.getBalance(this.myAddr, (error, result) => {
