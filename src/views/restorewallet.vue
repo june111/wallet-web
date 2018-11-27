@@ -16,7 +16,7 @@
 </template>
 <script>
 import dataForm from '@/components/form'
-import { Account, fromV3KeyStore, fromPrivateKey } from '@/util/wallet'
+import { Account, fromV3KeyStore, fromPrivateKey } from '@/utils/wallet'
 
 export default {
   name: 'restorewallet',

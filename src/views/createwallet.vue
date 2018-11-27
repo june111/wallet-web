@@ -7,7 +7,7 @@
 <script>
 import dataForm from '@/components/form'
 
-import { Account, generateMnemonic } from '@/util/wallet'
+import { Account, generateMnemonic } from '@/utils/wallet'
 
 export default {
   name: 'createwallet',

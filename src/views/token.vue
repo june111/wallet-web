@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <h1>ETH</h1>
     <h2>地址：{{myAddr}}</h2>
     <h2>余额：{{amount}}</h2>
@@ -42,7 +42,7 @@
       <el-dialog width="50%" title="确认密码" :visible.sync="innerVisible" append-to-body>
         <el-form :model="passform" ref="passform" :rules="passwordRules" :label-width="formLabelWidth">
           <el-form-item label="密码" prop="password">
-            <el-input v-model.number="passform.password" autocomplete="off"></el-input>
+            <el-input v-model="passform.password" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -61,21 +61,21 @@
         </el-row>
         <qrcode :value="qrVal" :options="qroption"></qrcode>
         <el-row class="address">
-          {{myAddr}}
+          <el-button @click="handleCopy">{{myAddr}}</el-button>
         </el-row>
         <el-row>
-          <el-button type="primary" @click="handlePrvkeyExport">导出私钥</el-button>
-          <el-button type="primary" @click="handleKeystoreExport" style="margin-left: 30px">导出keystore</el-button>
+          <el-button type="primary" @click="handleExportPrvkey">导出私钥</el-button>
+          <el-button type="primary" @click="innerVisible2 = true" style="margin-left: 30px">导出keystore</el-button>
         </el-row>
       </div>
-      <el-dialog width="50%" title="确认密码" :visible.sync="innerVisible" append-to-body>
+      <el-dialog width="50%" title="确认密码" :visible.sync="innerVisible2" append-to-body>
         <el-form :model="passform" ref="passform" :rules="passwordRules">
           <el-form-item label="密码" prop="password">
-            <el-input v-model.number="passform.password" autocomplete="off"></el-input>
+            <el-input v-model="passform.password" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="confirmPsw">确 定</el-button>
+          <el-button type="primary" @click="exportKeystore">确 定</el-button>
         </div>
       </el-dialog>
     </el-dialog>
@@ -83,11 +83,16 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+import { generateKeyStore } from '@/utils/wallet'
 
 import Web3 from 'web3'
 // import abi from 'ethereumjs-abi'
 import TX from 'ethereumjs-tx'
+
 import VueQrcode from '@chenfengyuan/vue-qrcode'
+
+import clip from '@/utils/clipboard' // 复制功能
+import FileSaver from 'file-saver' // 导出json
 
 import {
   getTransactionRecordURL,
@@ -131,6 +136,7 @@ export default {
       }
     }
     return {
+      loading: false,
       amount: '',
       // 交易列表
       list: '',
@@ -148,6 +154,7 @@ export default {
       },
       // 确认密码表单
       innerVisible: false,
+      innerVisible2: false,
       passform: {
         password: ''
       },
@@ -288,11 +295,26 @@ export default {
     handleReceipt () {
 
     },
-    handlePrvkeyExport () {
+    // todo
+    handleExportPrvkey () {
 
     },
-    handleKeystoreExport () {
 
+    handleCopy (event) {
+      clip(this.myAddr, event)
+    },
+    exportKeystore () {
+      this.$refs['passform'].validate(vaild => {
+        // 通过表单验证
+        if (vaild) {
+          this.innerVisible2 = false
+          this.loading = true
+          const text = generateKeyStore(this.myPrvKey, this.myPassword)
+          var blob = new Blob([text], { type: 'text/plain;charset=utf-8' })
+          FileSaver.saveAs(blob, this.accountName + '-keystore.json')
+          this.loading = false
+        }
+      })
     }
   }
 
@@ -301,13 +323,15 @@ export default {
 </script>
 <style lang="scss">
 .address {
-  border: 1px solid #d2d1d1;
-  padding: 10px;
-  width: 255px;
+
   margin: auto auto 25px;
+
+  .el-button {
+    width: 255px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
 }
 
 </style>
