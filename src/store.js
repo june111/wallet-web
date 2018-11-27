@@ -20,7 +20,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     wallet: {
-      addr: '' || db.get('wallet.addr').value(),
+      address: '' || db.get('wallet.address').value(),
       amount: '' || db.get('wallet.amount').value(),
       mnemonic: '' || db.get('wallet.mnemonic').value(),
       prvKey: '' || db.get('wallet.prvKey').value(),

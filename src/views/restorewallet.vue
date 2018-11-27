@@ -16,6 +16,7 @@
 </template>
 <script>
 import dataForm from '@/components/form'
+import { Account, fromV3KeyStore, fromPrivateKey } from '@/util/wallet'
 
 export default {
   name: 'restorewallet',
@@ -26,12 +27,47 @@ export default {
     return {
       activeName: 'mnemonic',
       postForm: {}
-
     }
   },
+  mounted: function () {},
   methods: {
     dataForm (dataForm) {
       this.postForm = dataForm
+
+      let account = {
+        name: dataForm.name,
+        password: dataForm.password
+      }
+      this.$store.commit('setAccount', account)
+
+      this.restoreAccount()
+    },
+    restoreAccount () {
+      if (this.activeName === 'mnemonic') this.restoreFromMnemonic()
+      if (this.activeName === 'privateKey') this.restoreFromPrvkey()
+      if (this.activeName === 'keystore') this.restoreFromKeystore()
+    },
+    restoreFromMnemonic () {
+      const mnemonic = this.postForm.content
+      let wallet = {}
+      wallet = new Account(mnemonic, '60', '0').account
+      wallet.mnemonic = mnemonic
+      console.log('wallet', wallet)
+      this.$store.commit('setWallet', wallet)
+    },
+    restoreFromPrvkey () {
+      const prvkey = this.postForm.content
+      let wallet = fromPrivateKey(prvkey)
+      console.log('wallet', wallet)
+      this.$store.commit('setWallet', wallet)
+    },
+    restoreFromKeystore () {
+      const keystore = this.postForm.content
+      const password = this.postForm.password
+      let prvKey = fromV3KeyStore(keystore, password)
+      let wallet = fromPrivateKey(prvKey)
+      console.log('wallet', wallet)
+      this.$store.commit('setWallet', wallet)
     }
   }
 }

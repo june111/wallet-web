@@ -21,28 +21,27 @@ export default {
     }
   },
   mounted: function () {
-    this.test()
     // console.log('ss',generateChildAccount('0'))
   },
   methods: {
     dataForm (dataForm) {
-      console.log('dataForm', dataForm)
-
+      // console.log('dataForm', dataForm)
       this.$store.commit('setAccount', dataForm)
 
       // 异步用 dispatch
       // this.$store.dispatch('createAccountData', dataForm)
       this.generateAccount()
     },
-    test () {
+    generateAccount () {
       // 生成 mnemonic code
       let mnemonic = generateMnemonic()
-      console.log('Account', new Account(mnemonic, '60', '0'))
-    },
-    generateAccount () {
-
-    //   // 异步用 dispatch
-    //   // this.$store.dispatch('createWalletData', wallet)
+      let wallet = {}
+      wallet = new Account(mnemonic, '60', '0').account
+      wallet.mnemonic = mnemonic
+      console.log('wallet', wallet)
+      this.$store.commit('setWallet', wallet)
+      //   // 异步用 dispatch
+      //   // this.$store.dispatch('createWalletData', wallet)
     }
   }
 }

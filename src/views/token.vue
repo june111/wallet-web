@@ -3,7 +3,12 @@
     <h1>ETH</h1>
     <h2>地址：{{myAddr}}</h2>
     <h2>余额：{{amount}}</h2>
-    交易记录
+    <el-row>
+      <el-button type="primary" @click="handleTransfer">转账</el-button>
+      <el-button type="success" @click="handleReceipt">收款</el-button>
+    </el-row>
+    <el-row>
+         交易记录
     <el-col v-for="(item) in list" :key="item.id">
       <el-card shadow="hover">
         <div>
@@ -13,15 +18,15 @@
             {{item.hash}}
             {{item.timeStamp | parseTime('{y}/{m}/{d}')}}
             <!-- todo -->
-            <!-- <span v-if="item.to !== myAddr ">+</span>
-            <span v-else>-</span> -->
+            <span v-if="item.to !== myAddr ">+</span>
+            <span v-else>-</span>
             {{item.value | weiToEther() }} ether
           </div>
         </div>
       </el-card>
     </el-col>
-    <el-button type="primary" @click="handleTransfer">转账</el-button>
-    <el-button type="success" @click="handleReceipt">收款</el-button>
+    </el-row>
+
     <el-dialog width="80%" title="转账" :visible.sync="dialogFormVisible">
       <el-form :model="form" ref="form" :rules="rules">
         <el-form-item label="ETH" :label-width="formLabelWidth" prop="val">
@@ -98,6 +103,7 @@ export default {
     }
     return {
       amount: '',
+      // 交易列表
       list: '',
       // 转账表单
       dialogFormVisible: false,
@@ -135,25 +141,25 @@ export default {
   computed: {
     ...mapState({
       // 钱包地址
-      myAddr: state => state.wallet.addr,
+      myAddr: state => state.wallet.address,
       myPrvKey: state => state.wallet.prvKey,
       myPassword: state => state.account.password
     })
   },
   methods: {
     getWeb3 () {
-      this.web3 = new Web3(Web3.givenProvider || 'https://ropsten.infura.io/v3/323e44018f994f0c97025d409eb79344')
+      // this.web3 = new Web3(Web3.givenProvider || 'https://ropsten.infura.io/v3/323e44018f994f0c97025d409eb79344')
       // 以太坊网络的节点地址
 
-      // if (typeof web3 !== 'undefined') {
-      //   // this.web3 = new Web3(web3.currentProvider)
-      //   // this.isMetamask = true
-      // } else {
-      //   // set the provider you want from Web3.providers
-      //   // this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8081'))
-      //    // 本地同步的测试网络的节点
-      //   // this.isMetamask = false
-      // }
+      if (typeof web3 !== 'undefined') {
+        // this.web3 = new Web3(web3.currentProvider)
+        // this.isMetamask = true
+      } else {
+        // set the provider you want from Web3.providers
+        this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8081'))
+        // 本地同步的测试网络的节点
+        // this.isMetamask = false
+      }
     },
     getBalance () {
       this.web3.eth.getBalance(this.myAddr, (error, result) => {
@@ -172,7 +178,7 @@ export default {
       Request(getTransactionRecordURL, 'get', addr)
         .then(res => {
           this.list = res.data.result
-          console.log('res', res.data.result)
+          // console.log('res', res.data.result)
         })
     },
     handleTransfer () {

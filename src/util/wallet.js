@@ -22,7 +22,7 @@ export class Account {
 
   // 助记词生成账户
   formMnemonic () {
-  // 将 mnemonic code 转成 binary 的 seed
+    // 将 mnemonic code 转成 binary 的 seed
     const seed = BIP39.mnemonicToSeed(this.mnemonic)
 
     // 生成 master key
@@ -84,14 +84,23 @@ export function getAccountInfo (account) {
   return { prvKey, pubKey, address }
 }
 
-// todo 优化prvKey 取值
+// 验证私钥是否有效
+export function isValidPrivate (privateKey) {
+  let key = Util.toBuffer(Util.addHexPrefix(privateKey))
+  return Util.isValidPrivate(key)
+}
+// 前面是否有0x
+export function isHexPrefixed (str) {
+  if (typeof str !== 'string') {
+    return str
+  }
+  return !!str.substring(0, 2).includes('0x')
+}
+
 // 私钥恢复钱包
 function prvKey2Wallet (prvKey) {
-  // 去掉前面的0x
-  let rowPrvKey = prvKey.substring(2)
-  var key = Buffer.from(rowPrvKey, 'hex')
-  // 私钥恢复钱包
-  var wallet = Wallet.fromPrivateKey(key)
+  // 前面需要0x
+  let wallet = Wallet.fromPrivateKey(Util.toBuffer(Util.addHexPrefix(prvKey)))
   return wallet
 }
 
