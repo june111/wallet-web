@@ -6,33 +6,33 @@
     <el-row>
       <el-button type="primary" @click="handleTransfer">转账</el-button>
       <el-button type="success" @click="handleReceipt">收款</el-button>
+      <el-button type="success" @click="detailsFormVisible = true">详情</el-button>
     </el-row>
     <el-row>
-         交易记录
-    <el-col v-for="(item) in list" :key="item.id">
-      <el-card shadow="hover">
-        <div>
-          <div class="card-content">
-            {{item.from}}
-            {{item.to}}
-            {{item.hash}}
-            {{item.timeStamp | parseTime('{y}/{m}/{d}')}}
-            <!-- todo -->
-            <span v-if="item.to !== myAddr ">+</span>
-            <span v-else>-</span>
-            {{item.value | weiToEther() }} ether
+      交易记录
+      <el-col v-for="(item) in list" :key="item.id">
+        <el-card shadow="hover">
+          <div>
+            <div class="card-content">
+              {{item.from}}
+              {{item.to}}
+              {{item.hash}}
+              {{item.timeStamp | parseTime('{y}/{m}/{d}')}}
+              <!-- todo -->
+              <span v-if="item.to !== myAddr ">+</span>
+              <span v-else>-</span>
+              {{item.value | weiToEther() }} ether
+            </div>
           </div>
-        </div>
-      </el-card>
-    </el-col>
+        </el-card>
+      </el-col>
     </el-row>
-
     <el-dialog width="80%" title="转账" :visible.sync="dialogFormVisible">
-      <el-form :model="form" ref="form" :rules="rules">
-        <el-form-item label="ETH" :label-width="formLabelWidth" prop="val">
+      <el-form :model="form" ref="form" :rules="rules" :label-width="formLabelWidth">
+        <el-form-item label="ETH" prop="val">
           <el-input v-model.trim="form.val" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="收款地址" :label-width="formLabelWidth" prop="addr">
+        <el-form-item label="收款地址" prop="addr">
           <el-input v-model.trim="form.addr" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="矿工费用" :label-width="formLabelWidth" prop="gasprice">
@@ -40,8 +40,8 @@
         </el-form-item>
       </el-form>
       <el-dialog width="50%" title="确认密码" :visible.sync="innerVisible" append-to-body>
-        <el-form :model="passform" ref="passform" :rules="passwordRules">
-          <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
+        <el-form :model="passform" ref="passform" :rules="passwordRules" :label-width="formLabelWidth">
+          <el-form-item label="密码" prop="password">
             <el-input v-model.number="passform.password" autocomplete="off"></el-input>
           </el-form-item>
         </el-form>
@@ -54,6 +54,31 @@
         <el-button type="primary" @click="handlePassword">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog width="80%" title="详情" :visible.sync="detailsFormVisible" center>
+      <div style="text-align: center;">
+        <el-row>
+          {{accountName}}
+        </el-row>
+        <qrcode :value="qrVal" :options="qroption"></qrcode>
+        <el-row class="address">
+          {{myAddr}}
+        </el-row>
+        <el-row>
+          <el-button type="primary" @click="handlePrvkeyExport">导出私钥</el-button>
+          <el-button type="primary" @click="handleKeystoreExport" style="margin-left: 30px">导出keystore</el-button>
+        </el-row>
+      </div>
+      <el-dialog width="50%" title="确认密码" :visible.sync="innerVisible" append-to-body>
+        <el-form :model="passform" ref="passform" :rules="passwordRules">
+          <el-form-item label="密码" prop="password">
+            <el-input v-model.number="passform.password" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="confirmPsw">确 定</el-button>
+        </div>
+      </el-dialog>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -62,6 +87,7 @@ import { mapState } from 'vuex'
 import Web3 from 'web3'
 // import abi from 'ethereumjs-abi'
 import TX from 'ethereumjs-tx'
+import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 import {
   getTransactionRecordURL,
@@ -70,6 +96,9 @@ import {
 
 export default {
   name: 'token',
+  components: {
+    'qrcode': VueQrcode
+  },
   data () {
     let validateAddr = (rule, value, callback) => {
       if (value === '') {
@@ -125,7 +154,13 @@ export default {
       passwordRules: {
         password: [{ trigger: 'blur', validator: validatePass }]
       },
-      formLabelWidth: '100px'
+      formLabelWidth: '100px',
+
+      detailsFormVisible: true,
+      qroption: {
+        width: 200,
+        errorCorrectionLevel: 'Q'
+      }
     }
   },
   created () {
@@ -141,10 +176,15 @@ export default {
   computed: {
     ...mapState({
       // 钱包地址
+      accountName: state => state.account.name,
       myAddr: state => state.wallet.address,
       myPrvKey: state => state.wallet.prvKey,
       myPassword: state => state.account.password
-    })
+    }),
+    qrVal: function () {
+      return 'ethereum:' + this.myAddr
+    }
+
   },
   methods: {
     getWeb3 () {
@@ -247,9 +287,27 @@ export default {
     },
     handleReceipt () {
 
+    },
+    handlePrvkeyExport () {
+
+    },
+    handleKeystoreExport () {
+
     }
   }
 
 }
 
 </script>
+<style lang="scss">
+.address {
+  border: 1px solid #d2d1d1;
+  padding: 10px;
+  width: 255px;
+  margin: auto auto 25px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+</style>
