@@ -67,15 +67,14 @@ export class Account {
 // 用Wallet 得到账号的私钥，公钥，地址
 export function getAccountInfo (account) {
   // 生成 Private key
-  const prvKey = account.getPrivateKeyString()
+  // const prvKey = account.getPrivateKeyString()
+  const prvKey = account.getPrivateKey()
   // 生成 Public key
-  // const childPubKry = derivedNode.getWallet().getPublicKeyString()
-  const rowPubKey = Util.privateToPublic(prvKey)
-  const pubKey = Util.bufferToHex(rowPubKey)
+  const pubKey = Util.privateToPublic(prvKey)
+  // const pubKey = Util.bufferToHex(rowPubKey)
 
   //  生成 address。
-  // const childAddr = derivedNode.getWallet().getAddressString()
-  const addr = Util.publicToAddress(rowPubKey)
+  const addr = Util.publicToAddress(pubKey)
   const addrStr = Util.bufferToHex(addr)
 
   // 用EIP55 Encoding Address
@@ -100,7 +99,7 @@ export function isHexPrefixed (str) {
 // 私钥恢复钱包
 function prvKey2Wallet (prvKey) {
   // 前面需要0x
-  let wallet = Wallet.fromPrivateKey(Util.toBuffer(Util.addHexPrefix(prvKey)))
+  let wallet = Wallet.fromPrivateKey(Util.toBuffer(Buffer.from(prvKey, 'hex')))
   return wallet
 }
 
@@ -112,9 +111,10 @@ export function generateKeyStore (prvKey, password) {
 }
 
 // KeyStore导入账户
-//  解密 KeyStore 得到 Private key
+// 解密 KeyStore 得到 Private key
 export function fromV3KeyStore (keyStore, password) {
-  return Wallet.fromV3(keyStore, password).getPrivateKeyString()
+  // return Wallet.fromV3(keyStore, password).getPrivateKeyString()
+  return Wallet.fromV3(keyStore, password).getPrivateKey()
 }
 
 // 私钥导入账户

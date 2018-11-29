@@ -29,7 +29,8 @@ export default new Vuex.Store({
     account: {
       name: '' || db.get('account.name').value(),
       password: '' || db.get('account.password').value()
-    }
+    },
+    network: '3' || db.get('network').value()
   },
   mutations: {
     setWallet (state, payload) {
@@ -43,6 +44,10 @@ export default new Vuex.Store({
     setAmount (state, payload) {
       state.wallet.amount = payload
       db.set('wallet.amount', payload).write()
+    },
+    setNetwork (state, payload) {
+      state.network = payload
+      db.set('network', payload).write()
     }
   },
   actions: {

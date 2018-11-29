@@ -21,7 +21,7 @@
   </el-form>
 </template>
 <script>
-import { validateMnemonic, isValidPrivate } from '@/util/wallet'
+import { validateMnemonic, isValidPrivate } from '@/utils/wallet'
 export default {
   // 接受父组件的值
   props: {

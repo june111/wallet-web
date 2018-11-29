@@ -1,6 +1,9 @@
 <template>
   <div>
+    <div>
     <h1>创建身份</h1>
+    </div>
+
     <data-form :activeName="activeName" @dataForm="dataForm" />
   </div>
 </template>
