@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="dataForm" ref="dataForm" label-width="130px" label-position="left" class="demo-ruleForm" :rules="rules">
+  <el-form :model="dataForm" ref="dataForm" label-position="left" class="form" :rules="rules">
     <el-form-item label="name" prop="name">
       <el-input type="text" v-model.trim="dataForm.name" autocomplete="off"></el-input>
     </el-form-item>
@@ -13,7 +13,12 @@
       <el-input type="text" v-model.trim="dataForm.content" autocomplete="off"></el-input>
     </el-form-item>
     <el-form-item :label="contentLabel" prop="content" v-if="activeName === 'keystore' ">
-      <input type="file" @change="loadTextFromFile">
+      <div tabindex="0" class="el-upload el-upload--text">
+        <button type="button" class="el-button el-button--primary el-button--small"  @change="loadTextFromFile">
+        <span>点击上传</span>
+      </button>
+      <input type="file" name="file" multiple="multiple" class="el-upload__input"></div>
+      <!-- <input type="file" @change="loadTextFromFile"> -->
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('dataForm')">提交</el-button>
@@ -101,3 +106,15 @@ export default {
 }
 
 </script>
+<style lang="scss">
+.form {
+  .el-form-item__content {
+    text-align: center;
+  }
+
+  .el-button {
+    margin-top: 20px;
+  }
+}
+
+</style>

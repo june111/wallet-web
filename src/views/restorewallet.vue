@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="create">
     <h1>恢复身份</h1>
     <el-tabs v-model="activeName">
       <el-tab-pane label="助记词" name="mnemonic">

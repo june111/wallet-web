@@ -2,11 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 // ui框架
 import 'element-ui/lib/theme-chalk/index.css'
 import ElementUI from 'element-ui'
+// import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 // filters
 import * as filters from './filters'

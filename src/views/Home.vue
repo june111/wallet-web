@@ -1,22 +1,26 @@
 <template>
   <div class="home">
-    <div class="bg">
-      <h1>创建你的个人钱包</h1>
-    </div>
+    <h1>HD Wallet</h1>
     <div class="btn">
-      <router-link to="/create-wallet">新建</router-link> |
-      <router-link to="/restore-wallet">恢复</router-link>
+      <el-button type="primary" @click="create">新建</el-button>
+      <el-button @click="restore">恢复</el-button>
     </div>
   </div>
 </template>
 <script>
-// @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'home',
-  components: {
-    // HelloWorld
+  methods: {
+    create () {
+      this.$router.push({
+        path: '/create-wallet'
+      })
+    },
+    restore () {
+      this.$router.push({
+        path: '/restore-wallet'
+      })
+    }
   }
 }
 
@@ -24,19 +28,35 @@ export default {
 <style lang="scss">
 @import "src/assets/common/_common.scss";
 
-.bg {
-  height: 15rem;
-  background: #afe7fb;
+html {
+  background: url('../assets/bg.jpg');
+}
+
+.home {
   color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
+  top: 20vh;
+  text-align: center;
 
   h1 {
-    margin: 0;
+    font-size: 5rem;
   }
-}
-.btn{
 
 }
+
+.btn {
+  .el-button+.el-button {
+    margin-left: auto;
+    margin-top: 20px;
+  }
+
+  .el-button {
+    width: 15rem;
+    display: block;
+    margin: 0 auto;
+    border-radius: 0;
+  }
+
+}
+
 </style>

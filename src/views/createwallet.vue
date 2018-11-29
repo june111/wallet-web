@@ -1,9 +1,6 @@
 <template>
-  <div>
-    <div>
+  <div class="create">
     <h1>创建身份</h1>
-    </div>
-
     <data-form :activeName="activeName" @dataForm="dataForm" />
   </div>
 </template>
@@ -50,3 +47,22 @@ export default {
 }
 
 </script>
+<style lang="scss">
+html {
+  background: url('../assets/bg.jpg');
+}
+.create{
+  background: #ffffff52;
+  padding: 50px 100px;
+    color: #fff;
+  position: relative;
+  top: 10vh;
+  h1{
+    text-align: center;
+  }
+  .el-form-item__label{
+    float: none;
+    color: #fff;
+  }
+}
+</style>

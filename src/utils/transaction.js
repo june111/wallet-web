@@ -103,7 +103,7 @@ export function sendTransaction (prvKey, fromAddr, toAddr, gasprice, val, feedba
     gasPrice: gasPrice,
     value: web3.fromDecimal(web3.toWei(val, 'ether')),
     to: toAddr,
-    from: fromAddr,
+    from: fromAddr, // 代币转账时候，是交易调用方地址
     data: encoded,
     chainId: 3 // 必须是数字
   }

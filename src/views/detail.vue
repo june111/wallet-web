@@ -149,6 +149,7 @@ export default {
       list: '',
       tokenName: '',
       tokenAmount: '',
+      contractaddress: '0x42a99ea3a2dc9bcac72031d8e67723dccfa6edfa',
       // 转账表单
       dialogFormVisible: false,
       form: {
@@ -225,7 +226,7 @@ export default {
     getRQTTransRecord () {
       const addr = {
         address: this.myAddr,
-        contractaddress: '0x42a99ea3a2dc9bcac72031d8e67723dccfa6edfa'
+        contractaddress: this.contractaddress
       }
       Request(getRopstenTokenTransRecordURL, 'get', addr)
         .then(res => {
@@ -257,7 +258,7 @@ export default {
     confirmPsw () {
       this.innerVisible = false
       this.$refs['passform'].resetFields()
-      this.tokenName === 'ETH' ? this.sendTrans() : this.sendToken()
+      this.tokenName === 'ETH' ? this.sendETH() : this.sendToken()
     },
     handlePassword () {
       this.$refs['form'].validate(vaild => {
@@ -267,7 +268,7 @@ export default {
         }
       })
     },
-    sendTrans () {
+    sendETH () {
       let feedback = () => {
         this.dialogFormVisible = false
         this.$refs['form'].resetFields()
@@ -279,7 +280,7 @@ export default {
         this.dialogFormVisible = false
         this.$refs['form'].resetFields()
       }
-      sendTransaction(this.myPrvKey, this.myAddr, '0x42a99ea3a2dc9bcac72031d8e67723dccfa6edfa', this.form.gasprice, this.form.val, feedback, this.form.addr)
+      sendTransaction(this.myPrvKey, this.myAddr, this.contractaddress, this.form.gasprice, this.form.val, feedback, this.form.addr)
     },
 
     // todo
