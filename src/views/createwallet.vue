@@ -1,5 +1,5 @@
 <template>
-  <div class="create">
+  <div class="create-wallet">
     <h1>创建身份</h1>
     <data-form :activeName="activeName" @dataForm="dataForm" />
   </div>
@@ -13,6 +13,9 @@ export default {
   name: 'createwallet',
   components: {
     dataForm
+  },
+  beforeCreate: function () {
+    document.getElementsByTagName('body')[0].className = 'bg-create'
   },
   data () {
     return {
@@ -47,22 +50,3 @@ export default {
 }
 
 </script>
-<style lang="scss">
-html {
-  background: url('../assets/bg.jpg');
-}
-.create{
-  background: #ffffff52;
-  padding: 50px 100px;
-    color: #fff;
-  position: relative;
-  top: 10vh;
-  h1{
-    text-align: center;
-  }
-  .el-form-item__label{
-    float: none;
-    color: #fff;
-  }
-}
-</style>

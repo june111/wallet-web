@@ -1,5 +1,5 @@
 <template>
-  <div class="create">
+  <div class="create-wallet">
     <h1>恢复身份</h1>
     <el-tabs v-model="activeName">
       <el-tab-pane label="助记词" name="mnemonic">
@@ -22,6 +22,9 @@ export default {
   name: 'restorewallet',
   components: {
     dataForm
+  },
+  beforeCreate: function () {
+    document.getElementsByTagName('body')[0].className = 'bg-create'
   },
   data () {
     return {
@@ -73,3 +76,7 @@ export default {
 }
 
 </script>
+<style lang="scss">
+body {}
+
+</style>

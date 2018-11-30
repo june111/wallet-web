@@ -106,3 +106,20 @@ export function toThousandslsFilter (num) {
 export function weiToEther (num) {
   return num / Math.pow(10, 18)
 }
+/**
+ * 删去小数点后的数字
+ * @param    {string|number}          num       需要处理的数
+ * @param    {number}                 precision 所要保留的小数位数
+ * @return   {string}                           处理后的数字
+ * @Author   June
+ * @DateTime 2018-10-17
+ */
+export function trimPrecision (num, precision) {
+  num = parseFloat(num) // 去掉小数后面的0
+  num = String(num)
+  let reservedBits = num.indexOf('.') + (precision + 1) // 要保留的小数点位数
+  let point = num.indexOf('.') + 1 // 获取小数点的位置
+  let result
+  point > 0 ? result = num.substring(0, reservedBits) : result = num
+  return result
+}

@@ -10,7 +10,11 @@
 <script>
 export default {
   name: 'home',
+  beforeCreate: function () {
+    document.getElementsByTagName('body')[0].className = 'bg-create'
+  },
   methods: {
+
     create () {
       this.$router.push({
         path: '/create-wallet'
@@ -28,22 +32,6 @@ export default {
 <style lang="scss">
 @import "src/assets/common/_common.scss";
 
-html {
-  background: url('../assets/bg.jpg');
-}
-
-.home {
-  color: #fff;
-  position: relative;
-  top: 20vh;
-  text-align: center;
-
-  h1 {
-    font-size: 5rem;
-  }
-
-}
-
 .btn {
   .el-button+.el-button {
     margin-left: auto;
@@ -55,6 +43,20 @@ html {
     display: block;
     margin: 0 auto;
     border-radius: 0;
+  }
+
+}
+
+</style>
+<style lang="scss" scoped>
+.home {
+  color: #fff;
+  position: relative;
+  top: 20vh;
+  text-align: center;
+
+  h1 {
+    font-size: 5rem;
   }
 
 }

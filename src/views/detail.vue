@@ -1,26 +1,31 @@
 <template>
-  <div v-loading="loading">
+  <div v-loading="loading" class="detail">
     <!-- <el-select v-model="network" placeholder="请选择" @change="changeNetwork">
       <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
       </el-option>
     </el-select> -->
-    <h1>{{tokenName}}</h1>
-    <h2>余额：{{tokenAmount}}</h2>
-    <el-row>
+    <div class="block-card">
+      <span class="name">{{tokenName}}</span>
+      <span class="amout">{{tokenAmount}}</span>
       <el-button type="primary" @click="handleTransfer">转账</el-button>
-      <el-button @click="detailsFormVisible = true">详情</el-button>
-    </el-row>
+    </div>
     <el-row>
-      交易记录
+      <span class="trans">交易记录</span>
       <el-col v-for="(item) in list" :key="item.id">
         <el-card shadow="hover">
-          <div>
-            <div class="card-content">
-              {{item.hash}}
-              {{item.timeStamp | parseTime('{y}/{m}/{d} {h}:{i}')}}
-              <span v-if="item.from.toUpperCase() == myAddr.toUpperCase() ">-</span>
+          <div style="display: flex">
+            <img v-if="item.from.toUpperCase() == myAddr.toUpperCase() " src="../assets/icon/out.svg" alt=""  width="30px" style="margin-right: 10px;" />
+            <img v-else src="../assets/icon/in.svg" alt=""  width="25px" style="margin-right: 10px;" />
+            <div class="card-content space-betwee" style="width: 90%">
+              <span>
+                <span class="address">{{item.hash.substring(0,10) + '...' +item.hash.substring(56)}}</span>
+              <span class="time">{{item.timeStamp | parseTime('{y}/{m}/{d}')}}</span>
+              </span>
+              <span>
+                <span v-if="item.from.toUpperCase() == myAddr.toUpperCase() ">-</span>
               <span v-else>+</span>
-              {{item.value | weiToEther() }} ether
+              {{item.value | weiToEther() | trimPrecision(4) }} ether
+              </span>
             </div>
           </div>
         </el-card>
@@ -53,42 +58,12 @@
         <el-button type="primary" @click="handlePassword">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog width="80%" title="详情" :visible.sync="detailsFormVisible" center>
-      <div style="text-align: center;">
-        <el-row>
-          {{accountName}}
-        </el-row>
-        <qrcode :value="qrVal" :options="qroption"></qrcode>
-        <el-row class="address">
-          <el-button @click="handleCopy">{{myAddr}}</el-button>
-        </el-row>
-        <el-row>
-          <el-button type="primary" @click="handleExportPrvkey">导出私钥</el-button>
-          <el-button type="primary" @click="innerVisible2 = true" style="margin-left: 30px">导出keystore</el-button>
-        </el-row>
-      </div>
-      <el-dialog width="50%" title="确认密码" :visible.sync="innerVisible2" append-to-body>
-        <el-form :model="passform" ref="passform" :rules="passwordRules">
-          <el-form-item label="密码" prop="password">
-            <el-input v-model="passform.password" autocomplete="off"></el-input>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="exportKeystore">确 定</el-button>
-        </div>
-      </el-dialog>
-    </el-dialog>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
-import { generateKeyStore } from '@/utils/wallet'
+
 import { sendTransaction, isAddress } from '@/utils/transaction'
-
-import VueQrcode from '@chenfengyuan/vue-qrcode'
-
-import clip from '@/utils/clipboard' // 复制功能
-import FileSaver from 'file-saver' // 导出json
 
 import {
   getTransactionRecordURL,
@@ -101,8 +76,8 @@ import {
 
 export default {
   name: 'token',
-  components: {
-    'qrcode': VueQrcode
+  beforeCreate: function () {
+    document.getElementsByTagName('body')[0].className = 'bg-detail'
   },
   data () {
     let validateAddr = (rule, value, callback) => {
@@ -164,21 +139,21 @@ export default {
       },
       // 确认密码表单
       innerVisible: false,
-      innerVisible2: false,
+      // innerVisible2: false,
       passform: {
         password: ''
       },
       passwordRules: {
         password: [{ trigger: 'blur', validator: validatePass }]
       },
-      formLabelWidth: '100px',
+      formLabelWidth: '100px'
 
-      detailsFormVisible: false,
-      // 二维码的设置
-      qroption: {
-        width: 200,
-        errorCorrectionLevel: 'Q'
-      }
+      // detailsFormVisible: false,
+      // // 二维码的设置
+      // qroption: {
+      //   width: 200,
+      //   errorCorrectionLevel: 'Q'
+      // }
     }
   },
   created () {},
@@ -281,48 +256,65 @@ export default {
         this.$refs['form'].resetFields()
       }
       sendTransaction(this.myPrvKey, this.myAddr, this.contractaddress, this.form.gasprice, this.form.val, feedback, this.form.addr)
-    },
-
-    // todo
-    handleExportPrvkey () {
-
-    },
-    // 点击复制地址
-    handleCopy (event) {
-      clip(this.myAddr, event)
-    },
-    // 导出私钥
-    exportKeystore () {
-      this.$refs['passform'].validate(vaild => {
-        // 通过表单验证
-        if (vaild) {
-          this.innerVisible2 = false
-          this.detailsFormVisible = false
-          this.loading = true
-          setTimeout(() => {
-            const text = generateKeyStore(this.myPrvKey, this.myPassword)
-            var blob = new Blob([text], { type: 'text/plain;charset=utf-8' })
-            FileSaver.saveAs(blob, this.accountName + '-keystore.json')
-            this.loading = false
-          }, 1000)
-        }
-      })
     }
+
   }
 
 }
 
 </script>
 <style lang="scss">
-.address {
 
-  margin: auto auto 25px;
+.detail {
+  color: #fff;
 
-  .el-button {
-    width: 255px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  // 余额信息
+  .block-card {
+    border: 1px solid #fff;
+    border-radius: 20px;
+    max-height: 200px;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: center;
+
+    .el-button--primary {
+      background-color: #293bc1;
+      border-color: #293bc1;
+      width: 200px;
+    }
+
+    .name,
+    .amout {
+      display: block;
+      margin-bottom: 20px;
+
+    }
+
+    .name {
+      font-size: 24px;
+
+    }
+
+    .amout {}
+  }
+
+  // 交易记录的字
+  .trans {
+    margin: 0 auto 20px 10px;
+    display: inline-block;
+  }
+
+  // 交易记录
+  .el-card {
+    .address {
+      display: block;
+
+    }
+
+    .time {
+      color: #ffffff9c;
+    }
   }
 }
 
