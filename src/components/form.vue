@@ -27,6 +27,7 @@
 </template>
 <script>
 import { validateMnemonic, isValidPrivate } from '@/utils/wallet'
+import { encryption } from '@/utils/util'
 export default {
   // 接受父组件的值
   props: {
@@ -80,9 +81,18 @@ export default {
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // dataForm是在父组件on监听的方法
-          // 第二个参数this.dataForm是需要传的值
-          this.$emit('dataForm', this.dataForm)
+          let postForm = Object.assign({}, this.dataForm)
+          delete postForm['checkPass']
+
+          const saltRounds = 10
+
+          // 加密存储密码
+          encryption(postForm['password'], saltRounds).then(hash => {
+            postForm['password'] = hash
+
+            // dataForm是在父组件on监听的方法
+            this.$emit('dataForm', postForm)
+          })
 
           this.$router.push({ path: '/token' })
         } else {

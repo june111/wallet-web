@@ -28,7 +28,6 @@ export default {
   },
   methods: {
     dataForm (dataForm) {
-      // console.log('dataForm', dataForm)
       this.$store.commit('setAccount', dataForm)
 
       // 异步用 dispatch

@@ -105,8 +105,8 @@ function prvKey2Wallet (prvKey) {
 
 //  加密子节点的 Private key 生成 KeyStore
 export function generateKeyStore (prvKey, password) {
-  var wallet = prvKey2Wallet(prvKey)
-  var keyStore = wallet.toV3String(password)
+  const wallet = prvKey2Wallet(prvKey)
+  const keyStore = wallet.toV3String(password)
   return keyStore
 }
 

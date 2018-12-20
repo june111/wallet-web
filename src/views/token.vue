@@ -55,6 +55,8 @@ import VueQrcode from '@chenfengyuan/vue-qrcode'
 import clip from '@/utils/clipboard' // 复制功能
 import FileSaver from 'file-saver' // 导出json
 
+import { decrypt } from '@/utils/util'
+
 export default {
   name: 'token',
   components: {
@@ -64,15 +66,6 @@ export default {
     document.getElementsByTagName('body')[0].className = 'bg-token'
   },
   data () {
-    let validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else if (value !== this.myPassword) {
-        callback(new Error('密码不正确'))
-      } else {
-        callback()
-      }
-    }
     return {
       tokenList: [],
       detailsFormVisible: false,
@@ -85,7 +78,7 @@ export default {
         password: ''
       },
       passwordRules: {
-        password: [{ trigger: 'blur', validator: validatePass }]
+        password: [{ trigger: 'blur', required: true, message: '请输入密码' }]
       }
 
     }
@@ -102,8 +95,11 @@ export default {
       // 钱包地址
       accountName: state => state.account.name,
       myAddr: state => state.wallet.address,
-      amount: state => state.wallet.amount
+      amount: state => state.wallet.amount,
+      myPrvKey: state => state.wallet.prvKey,
+      myPassword: state => state.account.password
     }),
+
     qrVal: function () {
       return 'ethereum:' + this.myAddr
     }
@@ -140,20 +136,27 @@ export default {
     handleCopy (event) {
       clip(this.myAddr, event)
     },
-    // 导出私钥
+    // 导出Keystore
     exportKeystore () {
       this.$refs['passform'].validate(vaild => {
         // 通过表单验证
         if (vaild) {
-          this.innerVisible = false
-          this.detailsFormVisible = false
-          this.loading = true
-          setTimeout(() => {
-            const text = generateKeyStore(this.myPrvKey, this.myPassword)
-            var blob = new Blob([text], { type: 'text/plain;charset=utf-8' })
-            FileSaver.saveAs(blob, this.accountName + '-keystore.json')
-            this.loading = false
-          }, 1000)
+          // 验证密码是否正确
+          decrypt(this.passform.password, this.myPassword).then(res => {
+            if (res) {
+              this.innerVisible = false
+              this.detailsFormVisible = false
+              this.loading = true
+              setTimeout(() => {
+                const text = generateKeyStore(this.myPrvKey, this.passform.password)
+                var blob = new Blob([text], { type: 'text/plain;charset=utf-8' })
+                FileSaver.saveAs(blob, this.accountName + '-keystore.json')
+                this.loading = false
+              }, 1000)
+            } else {
+              this.$message('密码不正确')
+            }
+          })
         }
       })
     }
@@ -164,7 +167,6 @@ export default {
 
 </script>
 <style lang="scss">
-
 .token {
   color: #fff;
 
