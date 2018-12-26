@@ -1,34 +1,36 @@
-# hd wallet 
+# HD wallet 
 
-web version。1.0.0
+This is an HD (Hierarchical Deterministic) wallet created by June. Just to practice the knowledge of the blockchain wallet. 
 
-功能：
+## Features
+
+* BIP32 Hierarchical deterministic (HD) address generation (Absolutely)
+* Mnemonic (BIP39) support for wallet backups
+* Device-based security: all private keys are stored locally, not in the cloud
+* Customizable wallet naming
+*
 
 ## Getting Started
 
 ### Prerequisites
 
 环境准备 node 
-```
-npm install
-```
 
 ### Installing
 安装
-A step by step series of examples that tell you how to get a development env running
+To get a development env running
 
-Say what the step will be
-
-```
+```bash
 npm install
 ```
+
 ### Compiles and hot-reloads for development
-```
+```bash
 npm run dev
 ```
 
 ### Compiles and minifies for production
-```
+```bash
 npm run build
 ```
 
@@ -62,9 +64,6 @@ Give an example
 npm run test:unit
 ```
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 
@@ -75,7 +74,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Authors
 
-* **June** - *Initial work* - [email](mailto:ru-q-ur@163.com)
+**June** [email](mailto:ru-q-ur@163.com)
 
 
 ## License
