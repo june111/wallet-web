@@ -1,16 +1,25 @@
-# HD wallet 
+# HD wallet demo
 
-This is an HD (Hierarchical Deterministic) wallet created by June. Just to practice the knowledge of the blockchain wallet. 
+An HD (Hierarchical Deterministic) wallet demo, just to practice the knowledge of the blockchain wallet. 
+
+Live version available at []()
 
 ## Features
 
-* BIP32 Hierarchical deterministic (HD) address generation (Absolutely)
+* BIP32 Hierarchical deterministic (HD) address generation 
 * Mnemonic (BIP39) support for wallet backups
+* Export a private key or keystore to backup
+* Importing a mnemonic phrase, private key or keystore to import the address 
 * Device-based security: all private keys are stored locally, not in the cloud
+* Send and receive payments
+* Offline qrcode creator
 * Customizable wallet naming
-*
 
-## Getting Started
+## Authors
+
+**June** [email](mailto:ru-q-ur@163.com)
+
+## Testing in a Browser
 
 ### Prerequisites
 
@@ -29,10 +38,6 @@ npm install
 npm run dev
 ```
 
-### Compiles and minifies for production
-```bash
-npm run build
-```
 
 End with an example of getting some data out of the system or using it for a little demo
 例子
@@ -43,12 +48,12 @@ End with an example of getting some data out of the system or using it for a lit
 Explain how to run the automated tests for this system
 
 ### Lints and fixes files
-```
+```bash
 npm run lint
 ```
 
 ### Run your tests
-```
+```bash
 npm run test
 ```
 
@@ -56,26 +61,15 @@ npm run test
 
 Explain what these tests test and why
 
-```
-Give an example
-```
 ### Run your unit tests
-```
+```bash
 npm run test:unit
 ```
 
-
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-
-## Authors
-
-**June** [email](mailto:ru-q-ur@163.com)
-
+* [Vue.js](https://cn.vuejs.org/) - The Progressive JavaScript Framework
+* [Element](http://element.eleme.io/) - A component library
 
 ## License
 
