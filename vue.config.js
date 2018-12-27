@@ -2,7 +2,7 @@ const path = require('path')
 const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin')
 
 module.exports = {
-  baseUrl: './',
+  baseUrl: 'wallet-web/',
   outputDir: 'docs',
   productionSourceMap: false,
   configureWebpack: {
