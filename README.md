@@ -2,7 +2,7 @@
 
 An HD (Hierarchical Deterministic) wallet demo, just to practice the knowledge of the blockchain wallet. 
 
-Live version available at []()
+Live version available at [https://june111.github.io/wallet-web/](https://june111.github.io/wallet-web/)
 
 ## Features
 

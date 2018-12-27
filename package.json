@@ -1,6 +1,8 @@
 {
   "name": "wallet-web",
   "version": "0.1.0",
+  "author": "June",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
