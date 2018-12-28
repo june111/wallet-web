@@ -10,7 +10,6 @@
   	<a href="https://github.com/ElemeFE/element">
     	<img src="https://img.shields.io/badge/element--ui-2.4.10-brightgreen.svg" alt="element-ui" />
   	</a>
-
 	<a href="https://codebeat.co/projects/github-com-june111-wallet-web-master">
 		<img src="https://codebeat.co/badges/a10a9b6b-6ac0-42e5-a8de-64d4ac7062c5" alt="codebeat badge" />
 	</a>
