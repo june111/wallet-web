@@ -2,10 +2,9 @@ language: node_js
 node_js: stable
 install:
   - npm install
-
 script:
   - npm run build
 notifications:
   email:
-    - leachzhou@163.com
+    - ru-q-ur@163.com
   on_failure: always
