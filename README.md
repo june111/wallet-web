@@ -15,9 +15,9 @@ Live version available at [http://blog.junezhu.top/wallet-web/](http://blog.june
 * Offline qrcode creator
 * Customizable wallet naming
 
-## Authors
+## Author
 
-**June** [email](mailto:ru-q-ur@163.com)
+**June** -> [email](mailto:ru-q-ur@163.com)
 
 ## Testing in a Browser
 
