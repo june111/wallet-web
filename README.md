@@ -1,15 +1,16 @@
 # HD wallet demo (web)
 
 <p align="center">
+   	<a href="https://travis-ci.com/june111/wallet-web" rel="nofollow">
+    	<img src="https://travis-ci.com/june111/wallet-web.svg?branch=master" alt="Build Status" />
+  	</a>
 	<a href="https://github.com/vuejs/vue">
     	<img src="https://img.shields.io/badge/vue-2.5.21-brightgreen.svg" alt="vue" />
   	</a>
   	<a href="https://github.com/ElemeFE/element">
     	<img src="https://img.shields.io/badge/element--ui-2.4.10-brightgreen.svg" alt="element-ui" />
   	</a>
-   	<a href="https://travis-ci.com/june111/wallet-web" rel="nofollow">
-    	<img src="https://travis-ci.com/june111/wallet-web.svg?branch=master" alt="Build Status" />
-  	</a>
+
 	<a href="https://codebeat.co/projects/github-com-june111-wallet-web-master">
 		<img src="https://codebeat.co/badges/a10a9b6b-6ac0-42e5-a8de-64d4ac7062c5" alt="codebeat badge" />
 	</a>
