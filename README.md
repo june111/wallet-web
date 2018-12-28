@@ -38,9 +38,8 @@ Live version available at [http://blog.junezhu.top/wallet-web/](http://blog.june
 
 **June** -> [email](mailto:ru-q-ur@163.com)
 
-## Testing in a Browser
 
-### To get a development env running
+## Getting started
 ```bash
 # Installing
 npm install
@@ -49,9 +48,9 @@ npm run dev
 ```
 App will be running at: http://localhost:8080/wallet-web/ 
 
-### Lints and fixes files
+## Build 
 ```bash
-npm run lint
+npm run build
 ```
 
 ## License

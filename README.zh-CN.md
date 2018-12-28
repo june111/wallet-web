@@ -37,9 +37,7 @@ demo线上版本： [http://blog.junezhu.top/wallet-web/](http://blog.junezhu.to
 
 **June** -> [email](mailto:ru-q-ur@163.com)
 
-## 在本地浏览器中运行
-
-### 开发
+## 开发
 ```bash
 # 安装依赖
 npm install
@@ -49,9 +47,9 @@ npm run dev
 
 浏览器访问 : http://localhost:8080/wallet-web/ 
 
-### Lints and fixes files
+## 发布
 ```bash
-npm run lint
+npm run build
 ```
 
 ## License
