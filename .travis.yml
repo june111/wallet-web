@@ -1,5 +1,11 @@
 language: node_js
 node_js: stable
-script: npm run test
+install:
+  - npm install
+
+script:
+  - npm run build
 notifications:
-  email: false
+  email:
+    - leachzhou@163.com
+  on_failure: always
