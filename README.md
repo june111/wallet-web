@@ -1,6 +1,17 @@
-# HD wallet demo
+# HD wallet demo (web)
 
-An HD (Hierarchical Deterministic) wallet demo, just to practice the knowledge of the blockchain wallet. 
+<p align="center">
+	 <a href="https://github.com/vuejs/vue">
+    <img src="https://img.shields.io/badge/vue-2.5.21-brightgreen.svg" alt="vue">
+  </a>
+  <a href="https://github.com/ElemeFE/element">
+    <img src="https://img.shields.io/badge/element--ui-2.4.10-brightgreen.svg" alt="element-ui">
+  </a>
+	<a href="https://codebeat.co/projects/github-com-june111-wallet-web-master"><img alt="codebeat badge" src="https://codebeat.co/badges/a10a9b6b-6ac0-42e5-a8de-64d4ac7062c5" /></a>
+
+</p>
+
+A web version of the HD (Hierarchical Deterministic) wallet demo
 
 Live version available at [http://blog.junezhu.top/wallet-web/](http://blog.junezhu.top/wallet-web/)
 
@@ -26,9 +37,7 @@ Live version available at [http://blog.junezhu.top/wallet-web/](http://blog.june
 环境准备 node 
 
 ### Installing
-安装
 To get a development env running
-
 ```bash
 npm install
 ```
