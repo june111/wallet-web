@@ -1,18 +1,21 @@
 <template>
   <div class="create-wallet">
+<quick-menu :count=2 />
     <h1>创建身份</h1>
     <data-form :activeName="activeName" @dataForm="dataForm" />
   </div>
 </template>
 <script>
 import dataForm from '@/components/form'
+import quickMenu from '@/components/quickMenu'
 
 import { Account, generateMnemonic } from '@/utils/wallet'
 
 export default {
   name: 'createwallet',
   components: {
-    dataForm
+    dataForm,
+    quickMenu
   },
   beforeCreate: function () {
     document.getElementsByTagName('body')[0].className = 'bg-create'

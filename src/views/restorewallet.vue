@@ -1,5 +1,6 @@
 <template>
   <div class="create-wallet">
+<quick-menu :count=2 />
     <h1>恢复身份</h1>
     <el-tabs v-model="activeName">
       <el-tab-pane label="助记词" name="mnemonic">
@@ -16,12 +17,15 @@
 </template>
 <script>
 import dataForm from '@/components/form'
+import quickMenu from '@/components/quickMenu'
 import { Account, fromV3KeyStore, fromPrivateKey } from '@/utils/wallet'
 
 export default {
   name: 'restorewallet',
   components: {
-    dataForm
+    dataForm,
+    quickMenu
+
   },
   beforeCreate: function () {
     document.getElementsByTagName('body')[0].className = 'bg-create'

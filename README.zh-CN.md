@@ -15,39 +15,39 @@
 	</a>
 </p>
 
-English | [简体中文](./README.zh-CN.md)
+[English](./README.md) | 简体中文
 
-## Introduction
+## 介绍
 
-A web version of the HD (Hierarchical Deterministic) wallet demo
+网页版的 HD (Hierarchical Deterministic) wallet demo
 
-Live version available at [http://blog.junezhu.top/wallet-web/](http://blog.junezhu.top/wallet-web/)
+demo线上版本： [http://blog.junezhu.top/wallet-web/](http://blog.junezhu.top/wallet-web/)
 
-## Features
+## 功能
 
-* BIP32 Hierarchical deterministic (HD) address generation 
-* Mnemonic (BIP39) support for wallet backups
-* Export a private key or keystore to backup
-* Importing a mnemonic phrase, private key or keystore to import the address 
-* Device-based security: all private keys are stored locally, not in the cloud
-* Send and receive payments
-* Offline qrcode creator
-* Customizable wallet naming
+* 生成 BIP32 Hierarchical deterministic (HD) 地址
+* 通过导出助记词、私钥、keystore 来备份钱包
+* 通过导入助记词、私钥、keystore 来导入钱包
+* 基于设备的安全性：所有私钥都存储在本地，而不是存储在云上
+* 转账与收款
+* 离线生成二维码
+* 自定义钱包名称
 
-## Author
+## 作者
 
 **June** -> [email](mailto:ru-q-ur@163.com)
 
-## Testing in a Browser
+## 在本地浏览器中运行
 
-### To get a development env running
+### 开发
 ```bash
-# Installing
+# 安装依赖
 npm install
-# Compiles and hot-reloads for development
+# 启动服务
 npm run dev
 ```
-App will be running at: http://localhost:8080/wallet-web/ 
+
+浏览器访问 : http://localhost:8080/wallet-web/ 
 
 ### Lints and fixes files
 ```bash
