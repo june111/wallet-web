@@ -1,6 +1,6 @@
 <template>
   <div class="create-wallet">
-<quick-menu :count=2 />
+    <quick-menu :count=2 />
     <h1>恢复身份</h1>
     <el-tabs v-model="activeName">
       <el-tab-pane label="助记词" name="mnemonic">
@@ -59,28 +59,26 @@ export default {
       let wallet = {}
       wallet = new Account(mnemonic, '60', '0').account
       wallet.mnemonic = mnemonic
-      console.log('wallet', wallet)
-      this.$store.commit('setWallet', wallet)
+      this.restoreSuccess(wallet)
     },
     restoreFromPrvkey () {
       const prvkey = this.postForm.content
       let wallet = fromPrivateKey(prvkey)
-      console.log('wallet', wallet)
-      this.$store.commit('setWallet', wallet)
+      this.restoreSuccess(wallet)
     },
     restoreFromKeystore () {
       const keystore = this.postForm.content
       const password = this.postForm.password
       let prvKey = fromV3KeyStore(keystore, password)
       let wallet = fromPrivateKey(prvKey)
+      this.restoreSuccess(wallet)
+    },
+    restoreSuccess (wallet) {
       console.log('wallet', wallet)
       this.$store.commit('setWallet', wallet)
+      this.$router.push({ path: '/token' })
     }
   }
 }
 
 </script>
-<style lang="scss">
-body {}
-
-</style>

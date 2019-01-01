@@ -43,8 +43,9 @@ export default {
       let wallet = {}
       wallet = new Account(mnemonic, '60', '0').account
       wallet.mnemonic = mnemonic
-      console.log('wallet', wallet)
+      // console.log('wallet', wallet)
       this.$store.commit('setWallet', wallet)
+      this.$router.push({ path: '/token' })
       //   // 异步用 dispatch
       //   // this.$store.dispatch('createWalletData', wallet)
     }

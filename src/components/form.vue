@@ -14,7 +14,7 @@
     </el-form-item>
     <el-form-item :label="contentLabel" prop="content" v-if="activeName === 'keystore' ">
       <div tabindex="0" class="el-upload el-upload--text">
-        <button type="button" class="el-button el-button--primary el-button--small btn-upload" @change="loadTextFromFile">
+        <button type="button" class="el-button el-button--primary el-button--small btn-upload" @change="loadTextFromFile" @click="test">
           <span>点击上传</span>
         </button>
         <input type="file" name="file" multiple="multiple" class="el-upload__input"></div>
@@ -78,6 +78,9 @@ export default {
     }
   },
   methods: {
+    test () {
+      console.log('sss')
+    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -93,8 +96,6 @@ export default {
             // dataForm是在父组件on监听的方法
             this.$emit('dataForm', postForm)
           })
-
-          this.$router.push({ path: '/token' })
         } else {
           console.log('error submit!!')
           return false

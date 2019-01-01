@@ -21,7 +21,7 @@ export default new Vuex.Store({
   state: {
     wallet: {
       address: '' || db.get('wallet.address').value(),
-      amount: '' || db.get('wallet.amount').value(),
+      amount: 0 || db.get('wallet.amount').value(),
       mnemonic: '' || db.get('wallet.mnemonic').value(),
       prvKey: '' || db.get('wallet.prvKey').value(),
       pubKey: '' || db.get('wallet.pubKey').value()
