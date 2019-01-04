@@ -19,18 +19,26 @@
           </el-card>
         </div>
       </div>
-      <el-dialog width="80%" title="详情" :visible.sync="detailsFormVisible" center>
+      <el-dialog width="80%" title="详情" :visible.sync="detailsFormVisible" center :before-close="handleClose">
         <div style="text-align: center;">
           <el-row>
             {{accountName}}
           </el-row>
           <qrcode :value="qrVal" :options="qroption"></qrcode>
-          <el-row class="address">
-            <el-button @click="handleCopy">{{myAddr}}</el-button>
+          <el-row class="address border-text">
+            <a  @click="handleCopy($event,myAddr)" title="Click to copy">{{myAddr}}</a>
           </el-row>
-          <el-row>
+          <el-row v-if="!showPrvKey">
             <el-button type="primary" @click="verifyPassword('prvKey')">导出私钥</el-button>
             <el-button type="primary" @click="verifyPassword('keystore')" style="margin-left: 30px">导出keystore</el-button>
+          </el-row>
+          <el-row v-else>
+            <div style="text-align: left;margin-bottom: 10px;">
+              点击复制私钥：
+            </div>
+            <div class="border-text">
+              <a  @click="handleCopy($event,getPrivateKeyString(myPrvKey))" title="Click to copy">{{getPrivateKeyString(myPrvKey)}}</a>
+            </div>
           </el-row>
         </div>
         <el-dialog width="50%" title="确认密码" :visible.sync="innerVisible" append-to-body :before-close="closePassform">
@@ -54,7 +62,7 @@
 <script>
 import { mapState } from 'vuex'
 import { getBalance } from '@/utils/transaction'
-import { generateKeyStore } from '@/utils/wallet'
+import { generateKeyStore, getPrivateKeyString } from '@/utils/wallet'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
 import clip from '@/utils/clipboard' // 复制功能
@@ -87,7 +95,8 @@ export default {
       prvKeyVisible: false,
       passwordRules: {
         password: [{ trigger: 'blur', required: true, message: '请输入密码' }]
-      }
+      },
+      showPrvKey: false
 
     }
   },
@@ -114,7 +123,7 @@ export default {
     }
   },
   methods: {
-
+    getPrivateKeyString: getPrivateKeyString,
     getList () {
       this.tokenList = [{
         name: 'ETH',
@@ -145,15 +154,15 @@ export default {
     },
 
     // 点击复制地址
-    handleCopy (event) {
-      clip(this.myAddr, event)
+    handleCopy (event, msg) {
+      clip(msg, event)
     },
     // 导出的密码验证
     verifyPassword (type) {
       this.exportType = type
       this.innerVisible = true
     },
-
+    // 关闭输入密码的弹窗
     closePassform () {
       this.innerVisible = false
       this.$refs['passform'].resetFields()
@@ -176,8 +185,11 @@ export default {
     },
     // 导出私钥
     exportPrvkey () {
+      this.loading = false
+      this.showPrvKey = true
       this.$refs['passform'].resetFields()
     },
+
     // 导出Keystore
     exportKeystore () {
       setTimeout(() => {
@@ -188,6 +200,11 @@ export default {
         this.loading = false
         this.$refs['passform'].resetFields()
       }, 1000)
+    },
+    // 关闭二维码窗口的弹窗
+    handleClose () {
+      this.detailsFormVisible = false
+      this.showPrvKey = false
     }
 
   }
@@ -224,6 +241,16 @@ export default {
       width: 100%;
       margin: 20px auto;
     }
+
+  }
+
+  .border-text {
+    border: 1px solid #e0dede;
+    padding: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
   }
 
   // 添加代币

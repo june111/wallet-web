@@ -43,7 +43,7 @@ export default {
     dataForm (dataForm) {
       this.postForm = dataForm
 
-      let account = {
+      const account = {
         name: dataForm.name,
         password: dataForm.password,
         createtime: dataForm.createtime
@@ -67,7 +67,7 @@ export default {
     },
     restoreFromPrvkey () {
       const prvkey = this.postForm.content
-      let wallet = fromPrivateKey(prvkey)
+      const wallet = fromPrivateKey(prvkey)
       this.restoreSuccess(wallet)
     },
     restoreFromKeystore () {

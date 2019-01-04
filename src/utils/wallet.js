@@ -12,7 +12,7 @@ export function validateMnemonic (mnemonic) {
   return BIP39.validateMnemonic(mnemonic)
 }
 
-// 助记词导入账户
+// 生成账户
 export class Account {
   constructor (mnemonic, coinType, accountIndex) {
     this.mnemonic = mnemonic
@@ -85,7 +85,7 @@ export function getAccountInfo (account) {
 
 // 验证私钥是否有效
 export function isValidPrivate (privateKey) {
-  let key = Util.toBuffer(Util.addHexPrefix(privateKey))
+  const key = Util.toBuffer(Util.addHexPrefix(privateKey))
   return Util.isValidPrivate(key)
 }
 // 前面是否有0x
@@ -99,7 +99,7 @@ export function isHexPrefixed (str) {
 // 私钥恢复钱包
 function prvKey2Wallet (prvKey) {
   // 前面需要0x
-  let wallet = Wallet.fromPrivateKey(Util.toBuffer(Buffer.from(prvKey, 'hex')))
+  const wallet = Wallet.fromPrivateKey(Util.toBuffer(Buffer.from(prvKey, 'hex')))
   return wallet
 }
 
@@ -121,4 +121,10 @@ export function fromV3KeyStore (keyStore, password) {
 export function fromPrivateKey (prvKey) {
   const wallet = prvKey2Wallet(prvKey)
   return getAccountInfo(wallet)
+}
+
+export function getPrivateKeyString (prvKey) {
+  let key = Util.bufferToHex(Util.toBuffer(Buffer.from(prvKey)))
+  key = key.slice(2)
+  return key
 }
