@@ -1,19 +1,20 @@
-const bcrypt = require('bcryptjs')
+const CryptoJS = require('crypto-js')
 
 // 加密
-export function encryption (password, saltRounds) {
-  return new Promise((resolve, reject) => {
-    bcrypt.hash(password, saltRounds, (err, hash) => {
-      hash ? resolve(hash) : reject(err)
-    })
-  })
+export function encrypt (msg, sk) {
+  const ciphertext = CryptoJS.AES.encrypt(msg, sk.toString()).toString()
+  return ciphertext
+}
+
+// 解密
+export function decrypt (msg, sk) {
+  const bytes = CryptoJS.AES.decrypt(msg, sk.toString())
+  const originalText = bytes.toString(CryptoJS.enc.Utf8)
+  return originalText
 }
 
 // 验证
-export function decrypt (password, hash) {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(password, hash, (err, res) => {
-      !err ? resolve(res) : reject(err)
-    })
-  })
+
+export function verify (input, msg, sk) {
+  return decrypt(msg, sk) === input
 }

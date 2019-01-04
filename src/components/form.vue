@@ -13,12 +13,9 @@
       <el-input type="text" v-model.trim="dataForm.content" autocomplete="off"></el-input>
     </el-form-item>
     <el-form-item :label="contentLabel" prop="content" v-if="activeName === 'keystore' ">
-      <div tabindex="0" class="el-upload el-upload--text">
-        <button type="button" class="el-button el-button--primary el-button--small btn-upload" @change="loadTextFromFile" @click="test">
-          <span>点击上传</span>
-        </button>
-        <input type="file" name="file" multiple="multiple" class="el-upload__input"></div>
-      <!-- <input type="file" @change="loadTextFromFile"> -->
+      <el-upload ref="upload" action="/assets" :auto-upload="false" :limit="1" :on-change="handleUpload" :on-exceed="fileExceed">
+        <el-button type="primary">点击上传 keystore 文件</el-button>
+      </el-upload>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('dataForm')">提交</el-button>
@@ -27,7 +24,7 @@
 </template>
 <script>
 import { validateMnemonic, isValidPrivate } from '@/utils/wallet'
-import { encryption } from '@/utils/util'
+import { encrypt } from '@/utils/util'
 export default {
   // 接受父组件的值
   props: {
@@ -78,39 +75,44 @@ export default {
     }
   },
   methods: {
-    test () {
-      console.log('sss')
-    },
+
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          // 通过表单验证
           let postForm = Object.assign({}, this.dataForm)
           delete postForm['checkPass']
-
-          const saltRounds = 10
+          postForm['createtime'] = (new Date()).valueOf()
 
           // 加密存储密码
-          encryption(postForm['password'], saltRounds).then(hash => {
-            postForm['password'] = hash
+          const hash = encrypt(postForm['password'], postForm['createtime'])
+          postForm['password'] = hash
 
-            // dataForm是在父组件on监听的方法
-            this.$emit('dataForm', postForm)
-          })
+          // dataForm是在父组件on监听的方法
+          this.$emit('dataForm', postForm)
         } else {
           console.log('error submit!!')
           return false
         }
       })
     },
-    loadTextFromFile (ev) {
-      const file = ev.target.files[0]
+    checkJson (file) {
+      const isJosn = file.raw.type === 'application/json'
+      if (!isJosn) this.$message.error('上传文件必须是json文件')
+      return isJosn
+    },
+    fileExceed () {
+      this.$message.error('只能上传1个文件')
+    },
+    handleUpload (file, fileList) {
+      this.checkJson(file) ? this.loadTextFromFile(file) : this.$refs.upload.clearFiles()
+    },
+    loadTextFromFile (file) {
       const reader = new FileReader()
-
       reader.onload = (e) => {
         this.dataForm.content = e.target.result
-        console.log('load', e.target.result)
       }
-      reader.readAsText(file)
+      reader.readAsText(file.raw)
     }
   }
 

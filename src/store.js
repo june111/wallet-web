@@ -28,7 +28,8 @@ export default new Vuex.Store({
     },
     account: {
       name: '' || db.get('account.name').value(),
-      password: '' || db.get('account.password').value()
+      password: '' || db.get('account.password').value(),
+      createtime: '' || db.get('account.createtime').value()
     },
     network: '3' || db.get('network').value()
   },

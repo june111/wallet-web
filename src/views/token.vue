@@ -44,7 +44,6 @@
           </div>
         </el-dialog>
         <el-dialog width="50%" title="显示私钥" :visible.sync="prvKeyVisible" append-to-body :before-close="closePassform">
-
           <div slot="footer" class="dialog-footer">
             <el-button type="primary" @click="prvKeyVisible = false">确 定</el-button>
           </div>
@@ -61,7 +60,7 @@ import VueQrcode from '@chenfengyuan/vue-qrcode'
 import clip from '@/utils/clipboard' // 复制功能
 import FileSaver from 'file-saver' // 导出json
 
-import { decrypt } from '@/utils/util'
+import { verify } from '@/utils/util'
 
 export default {
   name: 'token',
@@ -103,6 +102,7 @@ export default {
     ...mapState({
       // 钱包地址
       accountName: state => state.account.name,
+      salt: state => state.account.createtime,
       myAddr: state => state.wallet.address,
       amount: state => state.wallet.amount,
       myPrvKey: state => state.wallet.prvKey,
@@ -164,22 +164,19 @@ export default {
         // 通过表单验证
         if (vaild) {
           // 验证密码是否正确
-          decrypt(this.passform.password, this.myPassword).then(res => {
-            if (res) {
-              this.innerVisible = false
-              this.$refs['passform'].resetFields()
-              this.loading = true
-              this.exportType === 'keystore' ? this.exportKeystore() : this.exportPrvkey()
-            } else {
-              this.$message('密码不正确')
-            }
-          })
+          if (verify(this.passform.password, this.myPassword, this.salt)) {
+            this.innerVisible = false
+            this.loading = true
+            this.exportType === 'keystore' ? this.exportKeystore() : this.exportPrvkey()
+          } else {
+            this.$message('密码不正确')
+          }
         }
       })
     },
     // 导出私钥
     exportPrvkey () {
-
+      this.$refs['passform'].resetFields()
     },
     // 导出Keystore
     exportKeystore () {
@@ -189,6 +186,7 @@ export default {
         FileSaver.saveAs(blob, this.accountName + '-keystore.json')
         this.detailsFormVisible = false
         this.loading = false
+        this.$refs['passform'].resetFields()
       }, 1000)
     }
 

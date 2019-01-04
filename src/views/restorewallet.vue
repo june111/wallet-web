@@ -19,6 +19,7 @@
 import dataForm from '@/components/form'
 import quickMenu from '@/components/quickMenu'
 import { Account, fromV3KeyStore, fromPrivateKey } from '@/utils/wallet'
+import { decrypt } from '@/utils/util'
 
 export default {
   name: 'restorewallet',
@@ -30,6 +31,7 @@ export default {
   beforeCreate: function () {
     document.getElementsByTagName('body')[0].className = 'bg-create'
   },
+
   data () {
     return {
       activeName: 'mnemonic',
@@ -43,8 +45,10 @@ export default {
 
       let account = {
         name: dataForm.name,
-        password: dataForm.password
+        password: dataForm.password,
+        createtime: dataForm.createtime
       }
+      console.log('account', account)
       this.$store.commit('setAccount', account)
 
       this.restoreAccount()
@@ -68,10 +72,17 @@ export default {
     },
     restoreFromKeystore () {
       const keystore = this.postForm.content
-      const password = this.postForm.password
-      let prvKey = fromV3KeyStore(keystore, password)
-      let wallet = fromPrivateKey(prvKey)
-      this.restoreSuccess(wallet)
+      const msg = this.postForm.password
+      const password = decrypt(msg, this.postForm.createtime)
+      try {
+        const prvKey = fromV3KeyStore(keystore, password)
+        const wallet = fromPrivateKey(prvKey)
+        this.restoreSuccess(wallet)
+      } catch (err) {
+        const errMsg = err.toString()
+        if (errMsg === 'Error: Key derivation failed - possibly wrong passphrase') this.$message.error('keystore密码不正确')
+        console.log('err', err)
+      }
     },
     restoreSuccess (wallet) {
       console.log('wallet', wallet)
