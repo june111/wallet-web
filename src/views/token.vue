@@ -28,16 +28,19 @@
           <el-row class="address border-text">
             <a  @click="handleCopy($event,myAddr)" title="Click to copy">{{myAddr}}</a>
           </el-row>
-          <el-row v-if="!showPrvKey">
+          <el-row v-if="!showPrvKey && !showMnemonic">
             <el-button type="primary" @click="verifyPassword('prvKey')">导出私钥</el-button>
-            <el-button type="primary" @click="verifyPassword('keystore')" style="margin-left: 30px">导出keystore</el-button>
+            <el-button type="primary" @click="verifyPassword('mnemonic')">导出助记词</el-button>
+            <el-button type="primary" @click="verifyPassword('keystore')">导出keystore</el-button>
           </el-row>
           <el-row v-else>
             <div style="text-align: left;margin-bottom: 10px;">
-              点击复制私钥：
+              <span v-if="showMnemonic">点击复制助记词：</span>
+              <span v-if="showPrvKey">点击复制私钥：</span>
             </div>
             <div class="border-text">
-              <a  @click="handleCopy($event,getPrivateKeyString(myPrvKey))" title="Click to copy">{{getPrivateKeyString(myPrvKey)}}</a>
+              <a v-if="showMnemonic" @click="handleCopy($event,myMnemonic)" title="Click to copy">{{myMnemonic}}</a>
+              <a v-if="showPrvKey" @click="handleCopy($event,getPrivateKeyString(myPrvKey))" title="Click to copy">{{getPrivateKeyString(myPrvKey)}}</a>
             </div>
           </el-row>
         </div>
@@ -96,7 +99,8 @@ export default {
       passwordRules: {
         password: [{ trigger: 'blur', required: true, message: '请输入密码' }]
       },
-      showPrvKey: false
+      showPrvKey: false,
+      showMnemonic: false
 
     }
   },
@@ -115,7 +119,8 @@ export default {
       myAddr: state => state.wallet.address,
       amount: state => state.wallet.amount,
       myPrvKey: state => state.wallet.prvKey,
-      myPassword: state => state.account.password
+      myPassword: state => state.account.password,
+      myMnemonic: state => state.wallet.mnemonic
     }),
 
     qrVal: function () {
@@ -176,7 +181,9 @@ export default {
           if (verify(this.passform.password, this.myPassword, this.salt)) {
             this.innerVisible = false
             this.loading = true
-            this.exportType === 'keystore' ? this.exportKeystore() : this.exportPrvkey()
+            if (this.exportType === 'keystore') this.exportKeystore()
+            if (this.exportType === 'prvKey') this.exportPrvkey()
+            if (this.exportType === 'mnemonic') this.exportMnemonic()
           } else {
             this.$message('密码不正确')
           }
@@ -189,7 +196,12 @@ export default {
       this.showPrvKey = true
       this.$refs['passform'].resetFields()
     },
-
+    // 导出助记词
+    exportMnemonic () {
+      this.loading = false
+      this.showMnemonic = true
+      this.$refs['passform'].resetFields()
+    },
     // 导出Keystore
     exportKeystore () {
       setTimeout(() => {
