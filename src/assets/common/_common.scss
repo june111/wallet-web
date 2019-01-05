@@ -2,6 +2,7 @@
 
 body {
   max-width: 768px;
+  min-width: 414px;
   margin: 0 auto;
 }
 /*element ui 点击元素出现蓝色边框*/
@@ -28,6 +29,7 @@ body {
   background-size: cover;
   background-position: center;
   height: 100vh;
+  background-color: #000;
 }
 
 .bg-token {
