@@ -38,6 +38,6 @@ export default {
     background-image:url(../assets/icon/add.svg) !important;
 }
 .icon-restore{
-    background-image:url(../assets/icon/add.svg) !important;
+    background-image:url(../assets/icon/restore.svg) !important;
 }
 </style>

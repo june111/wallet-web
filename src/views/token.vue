@@ -64,7 +64,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
-import { getBalance } from '@/utils/transaction'
+import { getBalance, getTokenBalance } from '@/utils/transaction'
 import { generateKeyStore, getPrivateKeyString } from '@/utils/wallet'
 import VueQrcode from '@chenfengyuan/vue-qrcode'
 
@@ -86,6 +86,7 @@ export default {
       loading: false,
       tokenList: [],
       detailsFormVisible: false,
+      // 二维码的设置
       qroption: {
         width: 200,
         errorCorrectionLevel: 'Q'
@@ -134,19 +135,19 @@ export default {
         name: 'ETH',
         amount: this.amount,
         address: this.myAddr
+      },
+      {
+        name: 'RQT',
+        amount: '',
+        address: '0x42a99ea3a2dc9bcac72031d8e67723dccfa6edfa'
       }
-        // , {
-        //   name: 'RQT',
-        //   amount: '',
-        //   address: '0x42a99ea3a2dc9bcac72031d8e67723dccfa6edfa'
-        // }
       ]
       getBalance().then(result => {
         this.tokenList[0].amount = result
       })
-      // getTokenBalance(this.myAddr, '0x42a99ea3a2dc9bcac72031d8e67723dccfa6edfa').then(result => {
-      //   this.tokenList[1].amount = result
-      // })
+      getTokenBalance(this.myAddr, '0x42a99ea3a2dc9bcac72031d8e67723dccfa6edfa').then(result => {
+        this.tokenList[1].amount = result
+      })
     },
     goDetail (token, amount) {
       this.$router.push({

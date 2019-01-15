@@ -148,12 +148,6 @@ export default {
       },
       formLabelWidth: '100px'
 
-      // detailsFormVisible: false,
-      // // 二维码的设置
-      // qroption: {
-      //   width: 200,
-      //   errorCorrectionLevel: 'Q'
-      // }
     }
   },
   created () {},
