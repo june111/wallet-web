@@ -3,6 +3,7 @@ import store from '../store'
 import abi from 'ethereumjs-abi'
 import TX from 'ethereumjs-tx'
 // import { getContract } from './contract'
+import { toNum } from './util'
 
 let web3
 getWeb3()
@@ -25,7 +26,7 @@ export function getBalance () {
   return new Promise((resolve, reject) => {
     web3.eth.getBalance(store.state.wallet.address, (error, result) => {
       if (!error) {
-        let amount = parseInt(result, 10) / Math.pow(10, 18)
+        let amount = toNum(result) / Math.pow(10, 18)
         store.commit('setAmount', amount)
         resolve(amount)
       } else {
@@ -34,7 +35,7 @@ export function getBalance () {
     })
   })
 }
-export async function getTokenBalance (address, contractAddr) {
+export function getTokenBalance (address, contractAddr) {
   return new Promise((resolve, reject) => {
     // let balance = await myContract.balanceOf(address).call()
 
@@ -47,7 +48,7 @@ export async function getTokenBalance (address, contractAddr) {
       data: encoded
     }, (error, result) => {
       if (!error) {
-        balance = parseInt(result, 16) / Math.pow(10, decimals)
+        balance = toNum(result) / Math.pow(10, decimals)
         resolve(balance)
       } else { console.error(error) }
     })

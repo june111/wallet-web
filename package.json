@@ -14,6 +14,7 @@
     "@chenfengyuan/vue-qrcode": "1.0.0",
     "axios": "0.18.0",
     "bcryptjs": "2.4.3",
+    "bignumber.js": "^8.0.2",
     "bip39": "2.5.0",
     "clipboard": "2.0.4",
     "element-ui": "2.4.10",
