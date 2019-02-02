@@ -1,4 +1,4 @@
-# HD wallet demo (web)
+# 以太坊钱包 (网页版)
 
 <p align="center">
    	<a href="https://travis-ci.com/june111/wallet-web" rel="nofollow">
@@ -19,9 +19,9 @@
 
 ## 介绍
 
-网页版的 HD (Hierarchical Deterministic) wallet demo
+网页版的 HD (Hierarchical Deterministic) wallet，可以通过助记词、私钥、keystore 来备份或导入钱包，还可以进行转账和收款。
 
-demo线上版本： [http://blog.junezhu.top/wallet-web/](http://blog.junezhu.top/wallet-web/)
+线上版本： [http://blog.junezhu.top/wallet-web/](http://blog.junezhu.top/wallet-web/)
 
 ## 功能
 

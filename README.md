@@ -1,4 +1,4 @@
-# HD wallet demo (web)
+# Ethereum Wallet (Web)
 
 <p align="center">
    	<a href="https://travis-ci.com/june111/wallet-web" rel="nofollow">
@@ -19,7 +19,7 @@ English | [简体中文](./README.zh-CN.md)
 
 ## Introduction
 
-A web version of the HD (Hierarchical Deterministic) wallet demo
+A web version of the HD (Hierarchical Deterministic) wallet. You can back up or import your wallet with mnemonics, private keys, keystores. It can also be used to transfer and receipt on account.
 
 Live version available at [http://blog.junezhu.top/wallet-web/](http://blog.junezhu.top/wallet-web/)
 
